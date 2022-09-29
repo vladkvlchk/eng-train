@@ -1,0 +1,39 @@
+.trainField {
+  background-color: #f4f4f4;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 200px;
+  min-width: 300px;
+  border-radius: 17px;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.question {
+    margin: 30px;
+}
+
+nav{
+  display: flex;
+
+  button{
+    width: 50%;
+    background: none;
+    border: none;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+
+    &:hover{
+      color: black;
+    }
+
+    .underline{
+      text-decoration: underline dotted;
+    }
+  }
+}
