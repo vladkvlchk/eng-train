@@ -8,7 +8,6 @@ import {
   isValidLastName,
   isValidPassword,
 } from "../../../helper/validation";
-import Submit from "./Submit";
 
 const Form: React.FC = () => {
   const [firstName, setFirstName] = React.useState("");
@@ -26,7 +25,6 @@ const Form: React.FC = () => {
 
   const onSubmit = (event) => {
     setOpenAlert(true);
-    // setTimeout(1000, () => setAlert(false));
     // if (
     //   errorFirstName ||
     //   errorLastName ||
@@ -78,6 +76,7 @@ const Form: React.FC = () => {
 
     if (password === event.target.value) {
       setConfirmColor("success");
+      setErrorConfirm(false);
     } else {
       setConfirmColor("error");
     }
@@ -203,20 +202,36 @@ const Form: React.FC = () => {
             error={errorConfirm}
           />
         </Box>
-        <Button onClick={onSubmit}>Register</Button>
-        <Submit />
-        <Button onClick={onSubmit}>Register</Button>
-        <div className={styles.alert}>
-          <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseAlert}>
-            <Alert
-              onClose={handleCloseAlert}
-              severity="success"
-              sx={{ width: "100%" }}
-            >
-              This is a success message!
-            </Alert>
-          </Snackbar>
-        </div>
+        <Button
+          disabled={
+            !firstName ||
+            !email ||
+            !password ||
+            !confirm ||
+            errorFirstName ||
+            errorLastName ||
+            errorEmail ||
+            errorPassword ||
+            errorConfirm
+          }
+          onClick={onSubmit}
+        >
+          Register
+        </Button>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={openAlert}
+          // autoHideDuration={6000}
+          onClose={handleCloseAlert}
+        >
+          <Alert
+            onClose={handleCloseAlert}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            This is a success message!
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );
