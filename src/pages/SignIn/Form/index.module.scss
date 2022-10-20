@@ -1,0 +1,12 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    .name{
+        display: flex;
+        .input{
+            margin: 4px 4px;
+        }
+    }
+}

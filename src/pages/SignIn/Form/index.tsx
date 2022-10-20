@@ -10,17 +10,10 @@ import {
 } from "../../../helper/validation";
 
 const Form: React.FC = () => {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [confirm, setConfirm] = React.useState("");
-  const [errorFirstName, setErrorFirstName] = React.useState(false);
-  const [errorLastName, setErrorLastName] = React.useState(false);
   const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorPassword, setErrorPassword] = React.useState(false);
-  const [errorConfirm, setErrorConfirm] = React.useState(false);
-  const [confirmColor, setConfirmColor] = React.useState(undefined);
   const [openAlert, setOpenAlert] = React.useState(false);
 
   const onSubmit = (event) => {
@@ -28,20 +21,6 @@ const Form: React.FC = () => {
   };
 
   //// onChanges()
-  const onChangeFirstName = (event) => {
-    setFirstName(event.target.value);
-    if (errorFirstName) {
-      setErrorFirstName(!isValidFirstName(firstName));
-    }
-  };
-
-  const onChangeLastName = (event) => {
-    setLastName(event.target.value);
-    if (errorLastName) {
-      setErrorLastName(!isValidLastName(lastName));
-    }
-  };
-
   const onChangeEmail = (event) => {
     setEmail(event.target.value);
     if (errorEmail) {
@@ -54,47 +33,15 @@ const Form: React.FC = () => {
     if (errorPassword) {
       setErrorPassword(!isValidPassword(password));
     }
-
-    if (password === event.target.value) {
-      setConfirmColor("success");
-      setErrorConfirm(false);
-    } else {
-      setConfirmColor("error");
-    }
-  };
-
-  const onChangeConfirm = (event) => {
-    setConfirm(event.target.value);
-
-    if (password === event.target.value) {
-      setConfirmColor("success");
-      setErrorConfirm(false);
-    } else {
-      setConfirmColor("error");
-    }
   };
 
   // onBlurs()
-  const onBlurFirstName = () => {
-    setErrorFirstName(!isValidFirstName(firstName));
-  };
-
-  const onBlurLastName = () => {
-    setErrorLastName(!isValidLastName(lastName));
-  };
-
   const onBlurEmail = () => {
     setErrorEmail(!isValidEmail(email));
   };
 
   const onBlurPassword = () => {
     setErrorPassword(!isValidPassword(password));
-  };
-
-  const onBlurConfirm = () => {
-    if (!(password === confirm)) {
-      setErrorConfirm(true);
-    }
   };
 
   // others
@@ -122,36 +69,8 @@ const Form: React.FC = () => {
           autoComplete="off"
         >
           <TextField
-            className="input"
             autoFocus
-            label="First name*"
-            variant="outlined"
-            margin="normal"
-            onChange={onChangeFirstName}
-            error={errorFirstName}
-            onBlur={onBlurFirstName}
-          />
-          <TextField
-            className="input"
-            label="Last name"
-            variant="outlined"
-            margin="normal"
-            onChange={onChangeLastName}
-            error={errorLastName}
-            onBlur={onBlurLastName}
-          />
-        </Box>
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "51.5ch" },
-            display: "flex",
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            label="email*"
+            label="email"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -170,7 +89,7 @@ const Form: React.FC = () => {
           autoComplete="off"
         >
           <TextField
-            label="password*"
+            label="password"
             type="password"
             variant="outlined"
             margin="normal"
@@ -178,39 +97,15 @@ const Form: React.FC = () => {
             onBlur={onBlurPassword}
             fullWidth
             error={errorPassword}
-            helperText={
-              "Use 8 or more characters with mix of letters, capital letters and numbers"
-            }
-          />
-          <TextField
-            label="confirm password*"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            onChange={onChangeConfirm}
-            onBlur={onBlurConfirm}
-            color={confirmColor}
-            error={errorConfirm}
           />
         </Box>
         <Button
           variant="contained"
           sx={{ m: 1 }}
-          disabled={
-            !firstName ||
-            !email ||
-            !password ||
-            !confirm ||
-            errorFirstName ||
-            errorLastName ||
-            errorEmail ||
-            errorPassword ||
-            errorConfirm
-          }
+          disabled={!email || !password || errorEmail || errorPassword}
           onClick={onSubmit}
         >
-          Register
+          Log In
         </Button>
         <Portal container={document.body}>
           <Snackbar
