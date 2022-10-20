@@ -1,0 +1,15 @@
+.signUp {
+  background-color: #f4f4f4;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 200px;
+  min-width: 300px;
+  border-radius: 17px;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  
+  .title{
+    text-align: center;
+  }
+}
