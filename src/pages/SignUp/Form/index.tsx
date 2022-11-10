@@ -1,13 +1,25 @@
 import React from "react";
 
 import styles from "./index.module.scss";
-import { Alert, Box, Button, Portal, Snackbar, TextField } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Portal,
+  Select,
+  Snackbar,
+  TextField,
+} from "@mui/material";
 import {
   isValidEmail,
   isValidFirstName,
   isValidLastName,
   isValidPassword,
 } from "../../../helper/validation";
+import axios from "../../../axios";
 
 const Form: React.FC = () => {
   const [firstName, setFirstName] = React.useState("");
@@ -15,6 +27,7 @@ const Form: React.FC = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirm, setConfirm] = React.useState("");
+  const [role, setRole] = React.useState("student");
   const [errorFirstName, setErrorFirstName] = React.useState(false);
   const [errorLastName, setErrorLastName] = React.useState(false);
   const [errorEmail, setErrorEmail] = React.useState(false);
@@ -23,8 +36,18 @@ const Form: React.FC = () => {
   const [confirmColor, setConfirmColor] = React.useState(undefined);
   const [openAlert, setOpenAlert] = React.useState(false);
 
-  const onSubmit = (event) => {
-    setOpenAlert(true);
+  const onSubmit = async () => {
+    try {
+      const user = await axios.post("./registration", {
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+      });
+    } catch (error) {
+      setOpenAlert(true);
+    }
   };
 
   //// onChanges()
@@ -61,6 +84,10 @@ const Form: React.FC = () => {
     } else {
       setConfirmColor("error");
     }
+  };
+
+  const onChangeRole = (event) => {
+    setRole(event.target.value);
   };
 
   const onChangeConfirm = (event) => {
@@ -144,7 +171,7 @@ const Form: React.FC = () => {
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "51.5ch" },
+            "& > :not(style)": { m: 1, width: "25ch" },
             display: "flex",
           }}
           noValidate
@@ -159,6 +186,18 @@ const Form: React.FC = () => {
             error={errorEmail}
             onBlur={onBlurEmail}
           />
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+              labelId="role-label"
+              value={role}
+              label="Age"
+              onChange={onChangeRole}
+            >
+              <MenuItem value={"student"}>Student</MenuItem>
+              <MenuItem value={"teacher"}>Teacher</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Box
           component="form"
@@ -206,7 +245,8 @@ const Form: React.FC = () => {
             errorLastName ||
             errorEmail ||
             errorPassword ||
-            errorConfirm
+            errorConfirm ||
+            confirmColor !== "success"
           }
           onClick={onSubmit}
         >

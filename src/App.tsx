@@ -7,7 +7,7 @@ import TrainField from "./components/TrainField";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 
-const App : React.FC = () => {
+const App: React.FC = () => {
   return (
     <div className="App">
       <Routes>
@@ -20,11 +20,11 @@ const App : React.FC = () => {
             </>
           }
         />
-        <Route path="/sign-up" element={<SignUp />}/>
-        <Route path="/sign-in" element={<SignIn />}/>
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
       </Routes>
     </div>
   );
-}
+};
 
 export default App;
