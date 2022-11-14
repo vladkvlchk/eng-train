@@ -19,7 +19,7 @@ import {
   isValidLastName,
   isValidPassword,
 } from "../../../helper/validation";
-import axios from "../../../axios";
+import axios from "axios";
 
 const Form: React.FC = () => {
   const [firstName, setFirstName] = React.useState("");
@@ -38,13 +38,15 @@ const Form: React.FC = () => {
 
   const onSubmit = async () => {
     try {
-      const user = await axios.post("./registration", {
-        firstName,
-        lastName,
-        email,
-        password,
-        role,
-      });
+      console.log(process.env.BACKEND_API ?? "no");
+      // const user = await axios.post(`http://engtrain-env.eba-umqmvjpe.us-east-1.elasticbeanstalk.com/auth/registration`, {
+      //   firstName,
+      //   lastName,
+      //   email,
+      //   password,
+      //   role,
+      // });
+      // console.log(user);
     } catch (error) {
       setOpenAlert(true);
     }
