@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  baseURL: process.env.REACT_APP_BACKEND_API,
 });
 
 instance.interceptors.request.use((config) => {

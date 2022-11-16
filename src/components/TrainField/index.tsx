@@ -2,8 +2,10 @@ import React from "react";
 import styles from "./trainField.module.scss";
 import Option from "../Option";
 import Confetti from "../Confetti";
+import { useNavigate } from "react-router-dom";
 
 const TrainField: React.FC = () => {
+  const navigate = useNavigate();
   const [disabled, setDisabled] = React.useState(false);
   const [isConfetti, setIsConfetti] = React.useState(false);
 
@@ -15,6 +17,12 @@ const TrainField: React.FC = () => {
     { text: "20", veracity: false, hide: true },
     { text: "22", veracity: true, hide: true },
   ]);
+
+  React.useEffect(()=>{
+    if(!window.localStorage.getItem('token')){
+      navigate('sign-in');
+    }
+  })
 
   const openVeracity = (text: string) => {
     const newOptions = [];

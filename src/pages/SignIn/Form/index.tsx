@@ -1,23 +1,32 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./index.module.scss";
 import { Alert, Box, Button, Portal, Snackbar, TextField } from "@mui/material";
 import {
   isValidEmail,
-  isValidFirstName,
-  isValidLastName,
   isValidPassword,
 } from "../../../helper/validation";
+import axios from "../../../axios";
 
 const Form: React.FC = () => {
+  const navigate = useNavigate()
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorPassword, setErrorPassword] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
 
-  const onSubmit = (event) => {
-    setOpenAlert(true);
+  const onSubmit = async () => {
+    try{
+      const { data } = await axios.post('/auth/login', {email, password})
+      console.log(data.access_token);
+      window.localStorage.setItem('token', data.access_token);
+      navigate('/');
+    } catch (e) {
+      setOpenAlert(true);
+    }
   };
 
   //// onChanges()

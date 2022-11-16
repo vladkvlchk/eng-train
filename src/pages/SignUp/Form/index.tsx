@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./index.module.scss";
 import {
@@ -19,9 +20,11 @@ import {
   isValidLastName,
   isValidPassword,
 } from "../../../helper/validation";
-import axios from "axios";
+import axios from "../../../axios";
 
 const Form: React.FC = () => {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -38,15 +41,15 @@ const Form: React.FC = () => {
 
   const onSubmit = async () => {
     try {
-      console.log(process.env.BACKEND_API ?? "no");
-      // const user = await axios.post(`http://engtrain-env.eba-umqmvjpe.us-east-1.elasticbeanstalk.com/auth/registration`, {
-      //   firstName,
-      //   lastName,
-      //   email,
-      //   password,
-      //   role,
-      // });
-      // console.log(user);
+      const { data } = await axios.post('/auth/registration', {
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+      });
+      console.log(data);
+      navigate('/sign-in');
     } catch (error) {
       setOpenAlert(true);
     }
