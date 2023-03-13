@@ -1,16 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Alert, Box, Button, Portal, Snackbar, TextField } from "@mui/material";
+import jwt_decode from 'jwt-decode'
+
 
 import styles from "./index.module.scss";
-import { Alert, Box, Button, Portal, Snackbar, TextField } from "@mui/material";
+import { UseAppDispatch } from '../../../redux/store';
 import {
   isValidEmail,
   isValidPassword,
 } from "../../../helper/validation";
 import axios from "../../../axios";
+import { setUser } from "../../../redux/slices/user/slice";
+import { User } from "../../../redux/slices/user/types";
 
 const Form: React.FC = () => {
   const navigate = useNavigate()
+  const dispatch = UseAppDispatch();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -21,8 +27,9 @@ const Form: React.FC = () => {
   const onSubmit = async () => {
     try{
       const { data } = await axios.post('/auth/login', {email, password})
-      console.log(data.access_token);
-      window.localStorage.setItem('token', data.access_token);
+      window.localStorage.setItem('token', data.token);
+      const decoded : User = await jwt_decode(data.token);
+      dispatch(setUser(decoded))
       navigate('/');
     } catch (e) {
       setOpenAlert(true);

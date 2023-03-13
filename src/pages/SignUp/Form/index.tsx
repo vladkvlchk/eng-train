@@ -38,20 +38,23 @@ const Form: React.FC = () => {
   const [errorConfirm, setErrorConfirm] = React.useState(false);
   const [confirmColor, setConfirmColor] = React.useState(undefined);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState("[alert message]");
 
   const onSubmit = async () => {
     try {
-      const { data } = await axios.post('/auth/registration', {
+      const { data } = await axios.post("/auth/registration", {
         firstName,
         lastName,
         email,
         password,
         role,
       });
-      console.log(data);
-      navigate('/sign-in');
+      console.log('Registration successful');
+      navigate("/sign-in");
     } catch (error) {
+      setAlertMessage(error.response.data.message || "error");
       setOpenAlert(true);
+      console.log(error)
     }
   };
 
@@ -141,6 +144,116 @@ const Form: React.FC = () => {
     setOpenAlert(false);
   };
 
+  if (window.innerWidth < 550) {
+    //mobile version
+    return (
+      <div>
+        <div className={styles.form} onSubmit={onSubmit}>
+          <TextField
+            className="input"
+            autoFocus
+            label="First name*"
+            variant="outlined"
+            margin="normal"
+            onChange={onChangeFirstName}
+            error={errorFirstName}
+            onBlur={onBlurFirstName}
+          />
+          <TextField
+            className="input"
+            label="Last name"
+            variant="outlined"
+            margin="normal"
+            onChange={onChangeLastName}
+            error={errorLastName}
+            onBlur={onBlurLastName}
+          />
+          <TextField
+            label="email*"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            onChange={onChangeEmail}
+            error={errorEmail}
+            onBlur={onBlurEmail}
+          />
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+              labelId="role-label"
+              value={role}
+              label="Age"
+              onChange={onChangeRole}
+            >
+              <MenuItem value={"student"}>Student</MenuItem>
+              <MenuItem value={"teacher"}>Teacher</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="password*"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            onChange={onChangePassword}
+            onBlur={onBlurPassword}
+            fullWidth
+            error={errorPassword}
+            helperText={
+              "Use 8 or more characters with mix of letters, capital letters and numbers"
+            }
+          />
+          <TextField
+            label="confirm password*"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            onChange={onChangeConfirm}
+            onBlur={onBlurConfirm}
+            color={confirmColor}
+            error={errorConfirm}
+          />
+          <Button
+            variant="contained"
+            sx={{ m: 1 }}
+            disabled={
+              !firstName ||
+              !email ||
+              !password ||
+              !confirm ||
+              errorFirstName ||
+              errorLastName ||
+              errorEmail ||
+              errorPassword ||
+              errorConfirm ||
+              confirmColor !== "success"
+            }
+            onClick={onSubmit}
+          >
+            Register
+          </Button>
+          <Portal container={document.body}>
+            <Snackbar
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              open={openAlert}
+              autoHideDuration={6000}
+              onClose={handleCloseAlert}
+            >
+              <Alert
+                onClose={handleCloseAlert}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                {alertMessage}
+              </Alert>
+            </Snackbar>
+          </Portal>
+        </div>
+      </div>
+    );
+  }
+
+  //desktop version
   return (
     <div>
       <div className={styles.form} onSubmit={onSubmit}>
@@ -265,12 +378,12 @@ const Form: React.FC = () => {
             onClose={handleCloseAlert}
           >
             <Alert
-              onClose={handleCloseAlert}
-              severity="success"
-              sx={{ width: "100%" }}
-            >
-              This is a success message!
-            </Alert>
+                onClose={handleCloseAlert}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                {alertMessage}
+              </Alert>
           </Snackbar>
         </Portal>
       </div>
